@@ -1,4 +1,7 @@
 import csv
+import os.path
+
+filename = '../src/items.csv'
 
 
 class Item:
@@ -7,8 +10,9 @@ class Item:
     """
     pay_rate = 1.0
     all = []
+    CSV_PATH = os.path.join(filename)
 
-    def __init__(self, name: str, price: float, quantity: int) -> None:
+    def __init__(self, name: str, price: int, quantity: int) -> None:
         """
         Создание экземпляра класса item.
 
@@ -17,7 +21,7 @@ class Item:
         :param quantity: Количество товара в магазине.
         """
         Item.all.append(self)
-        self.__name = name
+        self.__name = name[:10]
         self.price = price
         self.quantity = quantity
 
@@ -27,11 +31,13 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
-        filename = '../src/items.csv'
-        with open(filename, newline='', encoding='cp1251') as f:
+        # filename = '../src/items.csv'
+        with open(cls.CSV_PATH, newline='', encoding='cp1251') as f:
             data = csv.DictReader(f)
             for row in data:
-                cls(row['name'], row['price'], row['quantity'])
+                price_float = cls.string_to_number(row['price'])
+                quantity_int = cls.string_to_number(row['quantity'])
+                cls(row['name'], price_float, quantity_int)
 
     @property
     def name(self):
@@ -39,8 +45,6 @@ class Item:
 
     @name.setter
     def name(self, new_name):
-        if len(new_name) <= 10:
-            self.__name = new_name
         self.__name = new_name[:10]
 
     def calculate_total_price(self) -> float:
