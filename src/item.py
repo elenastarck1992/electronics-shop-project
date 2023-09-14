@@ -25,19 +25,25 @@ class Item:
         self.price = price
         self.quantity = quantity
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.__name}"
+
     @staticmethod
     def string_to_number(str_number):
         return int(float(str_number))
 
     @classmethod
     def instantiate_from_csv(cls):
-        # filename = '../src/items.csv'
+        cls.all.clear()
         with open(cls.CSV_PATH, newline='', encoding='cp1251') as f:
             data = csv.DictReader(f)
             for row in data:
-                price_float = cls.string_to_number(row['price'])
+                price_int = cls.string_to_number(row['price'])
                 quantity_int = cls.string_to_number(row['quantity'])
-                cls(row['name'], price_float, quantity_int)
+                cls(row['name'], price_int, quantity_int)
 
     @property
     def name(self):
