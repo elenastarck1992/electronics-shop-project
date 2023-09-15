@@ -23,13 +23,19 @@ class Item:
         Item.all.append(self)
         self.__name = name[:10]
         self.price = price
-        self.quantity = quantity
+        self.quantity = int(quantity)
 
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
 
     def __str__(self):
         return f"{self.__name}"
+
+    def __add__(self, other):
+        """Сложение экземпляров класса `Phone` и `Item` по количеству товара в магазине"""
+        if issubclass(other.__class__, self.__class__):
+            return self.quantity + other.quantity
+        print("Эти объекты нельзя сложить")
 
     @staticmethod
     def string_to_number(str_number):

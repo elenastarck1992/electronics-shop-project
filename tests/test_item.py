@@ -1,6 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 import os.path
 from src.item import Item
+from tests.conftest import thing1
 
 filename = '../tests/test_file.csv'
 path = os.path.join(filename)
@@ -31,3 +32,7 @@ def test_name(item1):
 def test_string_to_number(item1):
     assert item1.string_to_number("6") == 6
     assert item1.string_to_number(6.0) == 6
+
+def test_add(item1, phone1):
+    assert item1 + thing1 == None
+    assert item1 + item1 == 6
