@@ -20,11 +20,15 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
+        super().__init__()
         Item.all.append(self)
-        self.__name = name[:10]
+        self.__name = name
         self.price = price
         self.quantity = int(quantity)
 
+    @property
+    def short_name(self):
+        return self.name[:10]
     def __repr__(self):
         return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
 
