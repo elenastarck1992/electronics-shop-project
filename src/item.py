@@ -1,6 +1,8 @@
 import csv
 import os.path
 
+from src.instantiateCSVError import InstantiateCSVError
+
 filename = '../src/items.csv'
 
 
@@ -47,13 +49,20 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
+        """Инициализирует экземпляры класса Item из csv файла"""
         cls.all.clear()
-        with open(cls.CSV_PATH, newline='', encoding='cp1251') as f:
-            data = csv.DictReader(f)
-            for row in data:
-                price_int = cls.string_to_number(row['price'])
-                quantity_int = cls.string_to_number(row['quantity'])
-                cls(row['name'], price_int, quantity_int)
+        if not os.path.exists(cls.CSV_PATH):
+            raise FileNotFoundError(f"Отсутствует файл {filename}")
+        try:
+            with open(cls.CSV_PATH, newline='', encoding='cp1251') as f:
+                data = csv.DictReader(f)
+                for row in data:
+                    price_int = cls.string_to_number(row['price'])
+                    quantity_int = cls.string_to_number(row['quantity'])
+                    cls(row['name'], price_int, quantity_int)
+        except(KeyError,TypeError):
+            raise InstantiateCSVError (f'Файл {filename} поврежден')
+
 
     @property
     def name(self):
