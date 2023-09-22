@@ -2,7 +2,9 @@ from src.item import Item
 
 
 class KeyBoardMixin:
-    __language = 'EN'
+
+    def __init__(self):
+        self.__language = 'EN'
 
     @property
     def language(self):
@@ -11,13 +13,11 @@ class KeyBoardMixin:
     def change_lang(self):
         if self.__language == 'EN':
             self.__language = 'RU'
-
         else:
             self.__language = 'EN'
 
 
-class Keyboard(KeyBoardMixin, Item):
+class Keyboard(Item, KeyBoardMixin):
+    """Класс для клавиатуры со сменой языка"""
+    pass
 
-    def __init__(self, name: str, price: int, quantity: int, language='EN'):
-        super().__init__(name, price, quantity)
-        self.__language = language
